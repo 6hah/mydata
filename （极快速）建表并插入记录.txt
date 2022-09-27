@@ -1,0 +1,58 @@
+#创建数据库 
+#用use选中所创建的数据库
+#复制并粘贴本文档内容到MySQL命令行，可迅速完成建表4-2,4-3,4-4,并插入数据
+create database if not exists webstore1122;
+use webstore1122;
+create table if not exists customer(		
+    cno char(4) primary key,
+    cname varchar(20) not null,
+    birthdate datetime,
+    sex char(2),
+    address varchar(50) default '北京市'
+    );	
+
+create table if not exists goods(			
+    gno char(4) primary key,
+    gname varchar(20) not null,
+    price float check(price > 0),
+    category varchar(50),
+    provider varchar(20),
+    storage int check(storage > 0)
+    );	
+
+create table if not exists orders(			
+    cno char(4),
+    gno char(4),
+    orderdate datetime,
+    amount int check(amount > 0),
+    primary key(cno,gno),
+    foreign key(cno) references customer(cno),
+    foreign key(gno) references goods(gno)
+    );
+
+insert into customer  values		
+      ("C101","马栋梁","1990-05-20","男","辽宁大连"),
+      ("C102","田宇农","1988-12-09","女","北京市"),
+      ("C103","李欣洋",NULL,"女","湖南长沙"),
+      ("C201","王刚","1978-03-12","男","北京市"),
+      ("C202","杨光","1992-09-29",null,"浙江杭州");
+
+insert into goods values		
+    ("G001","佳洁士牙膏",8.00,"日常用品","宝洁",98),
+    ("G002","舒肤佳香皂",4.50,"日常用品","宝洁",92),
+    ("G003","ONLY牛仔裤",238.00,"服装","天津绫致",23),
+    ("G004","休闲装",735.00,"服装","李宁公司",9),
+    ("G005","IPHONE手机",5180.00,"数码产品","苹果公司",20),
+    ("G006","Canon相机",1087.50,"数码产品","佳能公司",16),
+    ("G007","数据库系统概论",33.50,"图书","高等教育出版社",43),
+    ("G008","JSP实用案例教程",35.00,"图书","清华大学出版社",50);
+
+insert into orders values		
+    ("C101","G002","2007-12-19",3),
+    ("C101","G004","2008-10-3",1),
+    ("C102","G001","2008-11-25",2),
+    ("C103","G002","2009-1-10",5),
+    ("C201","G003","2009-3-23",2),
+    ("C201","G008","2009-4-8",10),
+    ("C201","G007","2009-5-27",7);
+
